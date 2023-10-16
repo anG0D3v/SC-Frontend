@@ -1,0 +1,30 @@
+FROM 138806120984.dkr.ecr.us-east-1.amazonaws.com/baseimage-node:latest as deps
+WORKDIR /frontend
+
+COPY package.json package-lock.json ./
+
+RUN npm install --force npm@9.6.7
+FROM 138806120984.dkr.ecr.us-east-1.amazonaws.com/baseimage-node:latest as builder
+WORKDIR /frontend
+COPY --from=deps /frontend/node_modules ./node_modules
+COPY . .
+
+
+ENV NEXT_TELEMETRY_DISABLED 1
+RUN pwd && ls
+RUN npm run build
+RUN rm -R .next/cache
+
+
+FROM 138806120984.dkr.ecr.us-east-1.amazonaws.com/baseimage-node:latest as runner
+WORKDIR /frontend
+ENV NEXT_TELEMETRY_DISABLED 1
+
+RUN addgroup --system --gid 1001 devgroup
+RUN adduser --system --uid 1001 dev
+
+COPY --from=builder --chown=dev:devgroup /frontend/.next ./.next
+COPY --from=builder /frontend/node_modules ./node_modules
+COPY --from=builder /frontend/package.json ./package.json
+EXPOSE 3000
+ENTRYPOINT ["npm", "run", "start"]

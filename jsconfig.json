@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "types": ["node", "cypress", "cypress-react-selector", "@testing-library/cypress"],
+        "paths": {
+            "@/*": ["./app/*"],
+            "@/components": ["./app/components/index"],
+            "@/styles/*": ["./app/styles/*"],
+            "@/utils/*": ["./app/utils/*"]
+        }
+    }
+}

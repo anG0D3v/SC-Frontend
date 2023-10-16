@@ -1,0 +1,17 @@
+[
+    {
+        "id": "all",
+        "name": "All About Us Content",
+        "key": 0
+    },
+    {
+        "id": "mine",
+        "name": "Mine",
+        "key": 1
+    },
+    {
+        "id": "deleted",
+        "name": "Deleted",
+        "key": 2
+    }
+]
